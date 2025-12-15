@@ -1,0 +1,32 @@
+import { marked } from 'marked';
+import { readFileSync, writeFileSync } from 'fs';
+
+const css = readFileSync('styles/main.css', 'utf-8');
+const pages = ['copyright', 'personal-use'];
+const output = {};
+
+for (const page of pages) {
+  const markdown = readFileSync(`content/${page}.md`, 'utf-8');
+  const content = marked.parse(markdown);
+
+  output[page] = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${page === 'copyright' ? 'Copyright & Image Usage' : 'Personal Use License'} - Kyle In Progress</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&amp;family=Source+Sans+Pro:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <style>${css}</style>
+</head>
+<body>
+  <div class="container">
+    ${content}
+  </div>
+</body>
+</html>`;
+}
+
+writeFileSync('src/content.js', `export const pages = ${JSON.stringify(output)};`);

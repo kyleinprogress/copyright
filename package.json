@@ -1,0 +1,14 @@
+{
+  "name": "copyright-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "marked": "^12",
+    "wrangler": "^4"
+  }
+}
